@@ -19,8 +19,16 @@ jobs:
       with:
         gradle-version: 7.6.2
         arguments: assembleRelease
-    - uses: ncipollo/release-action@v1
+    - uses: r0adkll/sign-android-release@v1
+      name: Sign app APK
+      id: sign_app
       with:
-        artifacts: "*.apk"
-        token: ${{ github.token }}
-        generateReleaseNotes: true
+        releaseDirectory: app/build/outputs/apk/release
+        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+        alias: 111111
+        keyStorePassword: 111111
+        keyPassword: 111111
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Signed app bundle
+        path: ${{steps.sign_app.outputs.signedReleaseFile}}
