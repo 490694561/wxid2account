@@ -16,21 +16,11 @@ jobs:
         distribution: temurin
         java-version: 11
     - uses: gradle/gradle-build-action@v2
+      id: gradle_app
       with:
         gradle-version: 7.6.2
         arguments: assembleRelease
-    - uses: r0adkll/sign-android-release@v1
-      name: Sign app APK
-      id: sign_app
-      with:
-        releaseDirectory: app/build/outputs/apk/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        alias: 111111
-        keyStorePassword: 111111
-        keyPassword: 111111
-      env:
-        BUILD_TOOLS_VERSION: "33.0.0"
     - uses: actions/upload-artifact@v2
       with:
         name: Signed app bundle
-        path: ${{steps.sign_app.outputs.signedReleaseFile}}
+        path: ${{steps.gradle_app.outputs}}
