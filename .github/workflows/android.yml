@@ -23,4 +23,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Signed app bundle
-        path: ${{steps.gradle_app.outputs}}
+        path: app/build/outputs/apk/release/*.apk
